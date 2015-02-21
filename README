@@ -1,0 +1,7 @@
+
+this is the genetic algorith implementation . 
+
+here only the mutation applied . 
+
+the crossover needs to be changed .  
+it wont work for overlapping problem 
