@@ -81,7 +81,7 @@ public class EvolutionMaster {
             if(returnPopulation.chromosome[i]!=null) cnt++;
         }
 
-        if(cnt!=2) System.out.println(" ------------------------------------------ there is an error in mutator");
+//        if(cnt!=2) System.out.println(" ------------------------------------------ there is an error in mutator");
 
          return returnPopulation;
     }

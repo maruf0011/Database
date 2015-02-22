@@ -18,6 +18,7 @@ public class Population implements Comparable{
     public static int [] fixedInChromosome;
     public static int totalDay,totalClassRoom,totalClassWithoutLab,totalTimeSlot;
     public static List<String>classList;
+    public static String [] fixedPositionChromosomeStringStorage;
 
     public Population()
     {
@@ -75,6 +76,19 @@ public class Population implements Comparable{
                         break;
                     }
                 }
+        }
+
+        /**
+         * assign the fixed class in the position of chromosome . f
+         * */
+
+        for(int iteratorForFixed = 0 ; iteratorForFixed<chromosome.length ; iteratorForFixed++)
+        {
+            if(Population.fixedInChromosome[iteratorForFixed]==1 && Population.fixedPositionChromosomeStringStorage[iteratorForFixed]!=null)
+            {
+                chromosome[iteratorForFixed] = Population.fixedPositionChromosomeStringStorage[iteratorForFixed];
+                endPosition[iteratorForFixed] = iteratorForFixed+StringProcessor.getClassHour(chromosome[iteratorForFixed])-1;
+            }
         }
 
         System.out.println("sesh");

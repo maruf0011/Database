@@ -112,6 +112,7 @@ public class Information {
         Population.indexOfChrosome = new int[totalDay][totalClassRoom][totalTimeSlot];
         Population.reverseIndex = new int[totalDay*totalClassRoom*totalTimeSlot][3];
         Population.fixedInChromosome = new int[totalDay*totalClassRoom*totalTimeSlot];
+        Population.fixedPositionChromosomeStringStorage = new String[totalDay*totalClassRoom*totalTimeSlot];
 
 
         for (int i = 0; i <totalDay ; i++) {
@@ -121,6 +122,7 @@ public class Information {
         }
 
         Arrays.fill(Population.fixedInChromosome , 0);
+        Arrays.fill(Population.fixedPositionChromosomeStringStorage , null);
 
         /**
          * setting fixed for friday and saturday and for the 1PM-2PM time slot;
@@ -159,9 +161,12 @@ public class Information {
             int startTime = (now.charAt(4)-'0')*10+(now.charAt(5) - '0');
             int endTime = (now.charAt(6)-'0')*10+(now.charAt(7) - '0');
 
+            String classInformationForNowSlot = now.substring(8);
+
             for (int time = startTime; time <=endTime ; time++) {
                 Population.FixedTimeFlag[day][room][time] = 1;
                 Population.fixedInChromosome[Population.indexOfChrosome[day][room][time]] = 1;
+                if(time==startTime) Population.fixedPositionChromosomeStringStorage[Population.indexOfChrosome[day][room][time]] = classInformationForNowSlot;
             }
         }
 
