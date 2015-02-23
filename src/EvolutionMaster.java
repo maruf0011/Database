@@ -18,7 +18,7 @@ public class EvolutionMaster {
             returnPopulation.endPosition[i] = parent.endPosition[i];
         }
 
-        Random rand = new Random(Calendar.getInstance().getTimeInMillis());
+        Random rand = new Random();
 
         int xPos = rand.nextInt(parent.chromosome.length);
 

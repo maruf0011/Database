@@ -1,9 +1,6 @@
 import com.sun.org.apache.bcel.internal.generic.SWAP;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created by phenix on 2/12/15.
@@ -32,7 +29,7 @@ public class Population implements Comparable{
     public void RandomGenerator(){
 
 
-        System.out.println("-> "+fixedInChromosome.length);
+//        System.out.println("-> "+fixedInChromosome.length);
         chromosome = new String[fixedInChromosome.length];
         endPosition = new int[fixedInChromosome.length];
 
@@ -56,21 +53,21 @@ public class Population implements Comparable{
 
             tmpList.set(index_y , now);
         }
-        System.out.println(" randomized ");
+//        System.out.println(" randomized ");
         for(String now : tmpList)
         {
 
                 while(true)
                 {
-                    System.out.println(" cholse for "+now);
+//                    System.out.println(" cholse for "+now);
                     int Position = rand.nextInt(chromosome.length);
                     if(fixedInChromosome[Position]==0 && chromosome[Position]==null)
                     {
 //                        System.out.println("length "+now.length());
 //                        System.out.println("hala bokkor "+now.charAt(6)+" and "+now.charAt(7));
 //                        System.out.println(Position);
-                        System.out.println("class hour "+StringProcessor.getClassHour(now));
-                        System.out.println(Position +" to "+(Position+ StringProcessor.getClassHour(now)) );
+//                        System.out.println("class hour "+StringProcessor.getClassHour(now));
+//                        System.out.println(Position +" to "+(Position+ StringProcessor.getClassHour(now)) );
                         chromosome[Position] = now;
                         endPosition[Position] = Position+ StringProcessor.getClassHour(now) - 1 ;
                         break;
@@ -91,15 +88,15 @@ public class Population implements Comparable{
             }
         }
 
-        System.out.println("sesh");
+        //System.out.println("sesh");
 
     }
 
     @Override
     public int compareTo(Object o) {
         FitnessCalculator fit =new FitnessCalculator();
-        int value1 = fit.calculateFitness(this);
-        int value2 = fit.calculateFitness((Population)o);
+        int value1 = fit.calculateFitness(this , 0);
+        int value2 = fit.calculateFitness((Population)o , 0);
 
 //        System.out.println("in comparator "+value1+" "+value2);
 

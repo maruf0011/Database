@@ -100,7 +100,7 @@ public class Information {
 
         totalDay = 7;
 
-        System.out.println(" calc "+ totalDay +" total room "+totalClassRoom+"total time "+totalTimeSlot);
+//        System.out.println(" calc "+ totalDay +" total room "+totalClassRoom+"total time "+totalTimeSlot);
         ProcessData();
 
 

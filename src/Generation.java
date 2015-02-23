@@ -20,7 +20,7 @@ public class Generation {
     }
     public void mutateProcessor() {
 
-        System.out.println(" pop list befor mutate "+populationList.size());
+        //System.out.println(" pop list befor mutate "+populationList.size());
         List<Population>tmpList = new ArrayList<Population>();
 
 
@@ -32,11 +32,11 @@ public class Generation {
             populationList.add(tmpList.get(i));
         }
 
-        System.out.println(" pop list befor mutate "+populationList.size());
+        //System.out.println(" pop list befor mutate "+populationList.size());
     }
 
     public void crossoverProcessor() {
-        System.out.println(" pop list befor cross "+populationList.size());
+        //System.out.println(" pop list befor cross "+populationList.size());
 
         List<Population>tmpList = new ArrayList<Population>();
 
@@ -57,23 +57,23 @@ public class Generation {
             populationList.add(p);
         }
 
-        System.out.println(" pop list after "+populationList.size());
+//        //System.out.println(" pop list after "+populationList.size());
 
     }
 
     public void evolutionProcessor(){
 
-        System.out.println("Size of Pop list before mutate "+populationList.size());
+        //System.out.println("Size of Pop list before mutate "+populationList.size());
         Collections.sort(populationList);
 
-        while(populationList.size()>10)
+        while(populationList.size()> 10)
         {
             int idx= populationList.size();
 
             populationList.remove(idx-1);
         }
 
-        System.out.println(" pop list after "+populationList.size());
+        //System.out.println(" pop list after "+populationList.size());
 
         generationNo++;
     }
@@ -83,7 +83,7 @@ public class Generation {
     {
         for(Population p : populationList)
         {
-            if(fitnessChecker.calculateFitness(p)==0) return true;
+            if(fitnessChecker.calculateFitness(p,1)==0) return true;
         }
         return false;
     }
@@ -92,16 +92,16 @@ public class Generation {
     {
         for(Population p : populationList)
         {
-            if(fitnessChecker.calculateFitness(p)==0) return p;
+            if(fitnessChecker.calculateFitness(p,1)==0) return p;
         }
         return  null;
     }
 
-    public void printFitness()
+    public void printFitness(int value)
     {
         for(Population p : populationList)
         {
-            System.out.printf(" %d", fitnessChecker.calculateFitness(p));
+            System.out.printf(" %d", fitnessChecker.calculateFitness(p , value));
         }
         System.out.println(":");
     }

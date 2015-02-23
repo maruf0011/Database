@@ -8,8 +8,8 @@ public class ForCompare implements Comparator<Population>{
     @Override
     public int compare(Population o1, Population o2) {
         FitnessCalculator fit =new FitnessCalculator();
-        int value1 = fit.calculateFitness(o1);
-        int value2 = fit.calculateFitness(o2);
+        int value1 = fit.calculateFitness(o1,0);
+        int value2 = fit.calculateFitness(o2 , 0);
 
 //        System.out.println("in comparator "+value1+" "+value2);
 

@@ -1,42 +1,42 @@
-import com.sun.org.apache.bcel.internal.generic.POP;
 
+import java.util.Calendar;
 import java.util.List;
 
 /**
  * Created by phenix on 2/13/15.
  */
 public class FitnessCalculator {
-    public int calculateFitness(Population currentPopulation)
+    public int calculateFitness(Population currentPopulation,int parentIndex)
     {
         int ret = 0;
 
-        ret += restrictedPositionOverlapping(currentPopulation);
-        ret += timeOverlapping(currentPopulation);
-        ret += dayOverlapping(currentPopulation);
-        ret += daySplitting(currentPopulation);
-        ret += classOverlapping(currentPopulation);
-        ret += classSplitting(currentPopulation);
+        ret += restrictedPositionOverlapping(currentPopulation,parentIndex);
+        ret += timeOverlapping(currentPopulation,parentIndex);
+        ret += dayOverlapping(currentPopulation,parentIndex);
+        ret += daySplitting(currentPopulation,parentIndex);
+        ret += classOverlapping(currentPopulation,parentIndex);
+        ret += classSplitting(currentPopulation,parentIndex);
 
-        ret+= labAndTheoryRoomProblem(currentPopulation);
-        ret += teacherTimeOverlapping(currentPopulation);
+        ret+= labAndTheoryRoomProblem(currentPopulation,parentIndex);
+        ret += teacherTimeOverlapping(currentPopulation,parentIndex);
 
-        ret += batchTimeOverlapping(currentPopulation);
+        ret += batchTimeOverlapping(currentPopulation,parentIndex);
 
-        ret += subjectOverlapping(currentPopulation);
+        ret += subjectOverlapping(currentPopulation,parentIndex);
 
         return  ret;
     }
     /**
      * check any part of any class is in restricted time location .
      * */
-    private int restrictedPositionOverlapping(Population p)
+    private int restrictedPositionOverlapping(Population p,int parentIndex)
     {
         int ret = 0;
 
         for (int i = 0; i <p.chromosome.length ; i++) {
             String now = p.chromosome[i];
 
-            if(now!=null)
+            if(now!=null && Population.fixedInChromosome[i]==0)
             {
                 int length = StringProcessor.getClassHour(now);
 
@@ -48,7 +48,7 @@ public class FitnessCalculator {
             }
         }
 
-//        if(ret!=0)System.out.println("restricted position overlapping "+ret);
+        if(ret!=0 && parentIndex==100)System.out.println("restricted position overlapping "+ret);
 
         return ret*100;
     }
@@ -56,7 +56,7 @@ public class FitnessCalculator {
     /**
      * check if two class time overlap .
      * */
-    private int timeOverlapping(Population p)
+    private int timeOverlapping(Population p,int parentIndex)
     {
         int ret=  0;
         for (int curClassPos = 0; curClassPos <p.chromosome.length ; curClassPos++) {
@@ -76,15 +76,15 @@ public class FitnessCalculator {
             }
         }
 
-//        if(ret!=0)System.out.println("only time overlapping "+ret);
+        if(ret!=0 && parentIndex==100)System.out.println("only time overlapping "+ret);
 
-        return  ret*80;
+        return  ret*90;
     }
 
     /**
      * check if same class is in the same day .....
      * */
-    private int dayOverlapping(Population p)
+    private int dayOverlapping(Population p,int parentIndex)
     {
         int ret = 0;
         for(int curClassPos = 0 ; curClassPos < p.chromosome.length ; curClassPos++)
@@ -109,15 +109,15 @@ public class FitnessCalculator {
             }
         }
 
-//        if(ret!=0)System.out.println("day overlapping "+ret);
-        return ret*70;
+        if(ret!=0 && parentIndex==100)System.out.println("day overlapping "+ret);
+        return ret*80;
     }
 
     /**
      * check if same class splitted in the consecutive two days
      * */
 
-    private int daySplitting(Population p)
+    private int daySplitting(Population p,int parentIndex)
     {
         int ret = 0;
 
@@ -132,16 +132,16 @@ public class FitnessCalculator {
             else if(Population.reverseIndex[curClassPos][0] != Population.reverseIndex[curClassPos+hourOfCurClass-1][0]) ret++;
         }
 
-//        if(ret!=0)System.out.println("day split "+ret);
+        if(ret!=0 && parentIndex==100)System.out.println("day split "+ret);
 
-        return  ret*60;
+        return ret*70;
     }
 
     /**
      * check if same class splitted in the consecutive two class in same days
      * */
 
-    private int classSplitting(Population p)
+    private int classSplitting(Population p,int parentIndex)
     {
         int ret = 0 ;
 
@@ -166,16 +166,16 @@ public class FitnessCalculator {
             }
         }
 
-//        if(ret!=0)System.out.println("class splite "+ret);
+        if(ret!=0 && parentIndex==100)System.out.println("class splite "+ret);
 
-        return  ret*50;
+        return ret*60;
     }
 
     /**
      * check if the same class put in the same day same class
      * */
 
-    private int classOverlapping(Population p)
+    private int classOverlapping(Population p,int parentIndex)
     {
         int ret = 0;
         for(int curClassPos = 0 ; curClassPos<p.chromosome.length ; curClassPos++)
@@ -205,11 +205,11 @@ public class FitnessCalculator {
             }
         }
 
-//        if(ret!=0)System.out.println("class overlapping "+ret);
-        return  ret*40;
+        if(ret!=0 && parentIndex==100)System.out.println("class overlapping "+ret);
+        return ret*50;
     }
 
-    private int labAndTheoryRoomProblem(Population p)
+    private int labAndTheoryRoomProblem(Population p,int parentIndex)
     {
         int ret = 0;
 
@@ -229,10 +229,10 @@ public class FitnessCalculator {
                 else if(islabFlag==0 && Population.reverseIndex[curClassPos+iterator][1] >= Population.totalClassWithoutLab) ret++;
             }
         }
-//        if(ret!=0)System.out.println("lab and theory overlapping");
-        return ret*30;
+        if(ret!=0 && parentIndex==100)System.out.println("lab and theory overlapping");
+        return ret*40;
     }
-    private int teacherTimeOverlapping(Population p)
+    private int teacherTimeOverlapping(Population p,int parentIndex)
     {
         int ret = 0;
 
@@ -247,18 +247,16 @@ public class FitnessCalculator {
 
                 if(curClassPos==nextClassPos) continue;
 
-                int []teacherListOfCurrentClass = new int[StringProcessor.getTeacherCount(p.chromosome[curClassPos])];
-                int []teacherListOfNextClass = new int[StringProcessor.getTeacherCount(p.chromosome[nextClassPos])];
+                int teacherListOfCurrentClass = StringProcessor.getTeacherCount(p.chromosome[curClassPos]);
+                int teacherListOfNextClass = StringProcessor.getTeacherCount(p.chromosome[nextClassPos]);
 
 
-                teacherListOfCurrentClass = StringProcessor.findAllTeacher(p.chromosome[curClassPos]);
-                teacherListOfNextClass = StringProcessor.findAllTeacher(p.chromosome[nextClassPos]);
-
-
-
-                for(int teacherIdOfCurrentClass : teacherListOfCurrentClass)
-                    for(int teacherIdOfNextClass : teacherListOfNextClass  )
+                for (int i = 0; i <teacherListOfCurrentClass ; i++)
+                    for (int j = 0; j < teacherListOfNextClass ; j++)
                     {
+                        int teacherIdOfCurrentClass = StringProcessor.findAllTeacher(p.chromosome[curClassPos] , i);
+                        int teacherIdOfNextClass = StringProcessor.findAllTeacher(p.chromosome[nextClassPos] , j);
+
                         if(teacherIdOfCurrentClass == teacherIdOfNextClass)
                         {
                             int hourOfCurrentClass = StringProcessor.getClassHour(p.chromosome[curClassPos]);
@@ -277,12 +275,12 @@ public class FitnessCalculator {
             }
         }
 
-//        if(ret!=0)System.out.println("teacher overlapping "+ret);
+        if(ret!=0 && parentIndex==100)System.out.println("teacher overlapping "+ret);
 
-        return ret*20;
+        return ret*30;
     }
 
-    private int batchTimeOverlapping(Population p)
+    private int batchTimeOverlapping(Population p,int parentIndex)
     {
         int ret = 0;
 
@@ -326,12 +324,12 @@ public class FitnessCalculator {
             }
         }
 
-//        if(ret!=0)System.out.println("batch overlapping "+ret);
+        if(ret!=0 && parentIndex==100)System.out.println("batch overlapping "+ret);
 
-        return ret*10;
+        return ret*20;
     }
 
-    private int subjectOverlapping(Population p)
+    private int subjectOverlapping(Population p,int parentIndex)
     {
         int ret = 0;
 
@@ -366,7 +364,8 @@ public class FitnessCalculator {
             }
         }
 
-//        if(ret!=0)System.out.println("subject overlapping "+ret);
+        if(ret!=0 && parentIndex==100)System.out.println("subject overlapping "+ret);
+        
         return ret*10;
     }
 }

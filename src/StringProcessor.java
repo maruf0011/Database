@@ -24,19 +24,12 @@ public class StringProcessor {
         return (str.charAt(2)-'0')*10 + (str.charAt(3)-'0');
     }
 
-    public static int[] findAllTeacher(String str)
+    public static int findAllTeacher(String str,int teacherIterator)
     {
-        int totalTeacher = getTeacherCount(str);
-
-        int [] teacherList = new int[totalTeacher];
-
-        int startPositionIndex = 12;
-
-        for(int teacherIterator = 0 ; teacherIterator<totalTeacher ; teacherIterator++)
-        {
-            teacherList[teacherIterator] = ( str.charAt(startPositionIndex + (teacherIterator*2)) -'0')*10 + (str.charAt(startPositionIndex + (teacherIterator*2)+1)-'0');
+        if(teacherIterator>=getTeacherCount(str)) {
+            return -1;
         }
-
-        return teacherList;
+        int startPositionIndex = 12;
+        return ( str.charAt(startPositionIndex + (teacherIterator*2)) -'0')*10 + (str.charAt(startPositionIndex + (teacherIterator*2)+1)-'0');
     }
 }
