@@ -247,23 +247,33 @@ public class FitnessCalculator {
 
                 if(curClassPos==nextClassPos) continue;
 
-                int teacherIdOfCurrentClass = StringProcessor.getTeacherId(p.chromosome[curClassPos]);
-                int teacherIdOfNextClass = StringProcessor.getTeacherId(p.chromosome[nextClassPos]);
+                int []teacherListOfCurrentClass = new int[StringProcessor.getTeacherCount(p.chromosome[curClassPos])];
+                int []teacherListOfNextClass = new int[StringProcessor.getTeacherCount(p.chromosome[nextClassPos])];
 
-                if(teacherIdOfCurrentClass == teacherIdOfNextClass)
-                {
-                    int hourOfCurrentClass = StringProcessor.getClassHour(p.chromosome[curClassPos]);
 
-                    for(int iterator = 0 ; iterator<hourOfCurrentClass ; iterator++)
+                teacherListOfCurrentClass = StringProcessor.findAllTeacher(p.chromosome[curClassPos]);
+                teacherListOfNextClass = StringProcessor.findAllTeacher(p.chromosome[nextClassPos]);
+
+
+
+                for(int teacherIdOfCurrentClass : teacherListOfCurrentClass)
+                    for(int teacherIdOfNextClass : teacherListOfNextClass  )
                     {
-                        if(curClassPos+iterator>=p.chromosome.length) continue;
-
-                        if(Population.reverseIndex[curClassPos+iterator][0] == Population.reverseIndex[nextClassPos][0])
+                        if(teacherIdOfCurrentClass == teacherIdOfNextClass)
                         {
-                            if(Population.reverseIndex[curClassPos+iterator][2] == Population.reverseIndex[nextClassPos][2]) ret++;
+                            int hourOfCurrentClass = StringProcessor.getClassHour(p.chromosome[curClassPos]);
+
+                            for(int iterator = 0 ; iterator<hourOfCurrentClass ; iterator++)
+                            {
+                                if(curClassPos+iterator>=p.chromosome.length) continue;
+
+                                if(Population.reverseIndex[curClassPos+iterator][0] == Population.reverseIndex[nextClassPos][0])
+                                {
+                                    if(Population.reverseIndex[curClassPos+iterator][2] == Population.reverseIndex[nextClassPos][2]) ret++;
+                                }
+                            }
                         }
                     }
-                }
             }
         }
 
