@@ -64,7 +64,7 @@ public class Population implements Comparable{
                     if(fixedInChromosome[Position]==0 && chromosome[Position]==null)
                     {
 //                        System.out.println("length "+now.length());
-//                        System.out.println("hala bokkor "+now.charAt(6)+" and "+now.charAt(7));
+//                        System.out.println("here  "+now.charAt(6)+" and "+now.charAt(7));
 //                        System.out.println(Position);
 //                        System.out.println("class hour "+StringProcessor.getClassHour(now));
 //                        System.out.println(Position +" to "+(Position+ StringProcessor.getClassHour(now)) );
